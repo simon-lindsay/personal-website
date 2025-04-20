@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { icp_portfolio_backend } from "declarations/icp_portfolio_backend";
+import React, { useState, useEffect } from "react";
+import { getBackend } from "../utils/getBackend";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +8,16 @@ const ContactForm = () => {
     message: "",
   });
   const [status, setStatus] = useState("");
+  const [backend, setBackend] = useState(null);
+
+  useEffect(() => {
+    // Dynamically import the backend
+    async function loadBackend() {
+      const icp_backend = await getBackend();
+      setBackend(icp_backend);
+    }
+    loadBackend();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,9 +25,15 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!backend) {
+      setStatus("Backend is not ready. Please try again.");
+      return;
+    }
+
     const timestamp = Date.now();
+
     try {
-      const res = await icp_portfolio_backend.submit({
+      const res = await backend.submit({
         ...formData,
         timestamp,
       });
