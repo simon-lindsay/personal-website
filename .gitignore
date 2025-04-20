@@ -1,0 +1,28 @@
+# IDEs and editors
+.vscode/
+.idea/
+**/*~
+
+# MacOS system files
+.DS_Store
+**/.DS_Store
+
+# DFX & Internet Computer
+.dfx/
+.canisters/
+canister_ids.json
+
+# Motoko/Rust (if using Rust canisters in future)
+target/
+
+# TypeScript declarations
+**/declarations/
+
+# Frontend build output
+node_modules/
+**/node_modules/
+dist/
+.svelte-kit/  # if using SvelteKit (safe to remove if not used)
+
+# Environment variables
+.env
