@@ -1,19 +1,13 @@
-let backend;
+let submitMessage;
 
-if (import.meta.env.MODE === "development") {
-  try {
-    backend = await import("../../../declarations/icp_portfolio_backend").then(
-      (mod) => mod.icp_portfolio_backend
-    );
-  } catch (e) {
-    console.warn("⚠️ Backend not available in dev mode:", e);
+(async () => {
+  if (import.meta.env.MODE === "development") {
+    const mod = await import("./submitMessage.dev.js");
+    submitMessage = mod.submitMessage;
+  } else {
+    const mod = await import("./submitMessage.prod.js");
+    submitMessage = mod.submitMessage;
   }
-}
+})();
 
-export async function submitMessage(data) {
-  if (backend) {
-    return backend.submit(data);
-  }
-
-  return "Backend unavailable in this environment.";
-}
+export { submitMessage };
