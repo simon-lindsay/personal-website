@@ -21,7 +21,6 @@ target/
 # Frontend build output
 node_modules/
 **/node_modules/
-dist/
 .svelte-kit/  # if using SvelteKit (safe to remove if not used)
 
 # Environment variables
