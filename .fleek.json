@@ -1,7 +1,0 @@
-{
-  "build": {
-    "baseDir": "src/icp_portfolio_frontend",
-    "buildCommand": "npm run build",
-    "publishDir": "dist"
-  }
-}
