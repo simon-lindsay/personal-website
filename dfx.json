@@ -5,20 +5,16 @@
       "type": "motoko"
     },
     "icp_portfolio_frontend": {
-      "dependencies": [
-        "icp_portfolio_backend"
-      ],
-      "source": [
-        "src/icp_portfolio_frontend/dist"
-      ],
+      "dependencies": ["icp_portfolio_backend"],
+      "source": ["src/icp_portfolio_frontend/dist"],
       "type": "assets",
-      "workspace": "icp_portfolio_frontend"
+      "build": "npm run build --prefix src/icp_portfolio_frontend"
     }
   },
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "mops sources"
     }
   },
   "output_env_file": ".env",

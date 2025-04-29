@@ -1,44 +1,40 @@
-import { fileURLToPath, URL } from "url";
-import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import environment from "vite-plugin-environment";
-import dotenv from "dotenv";
+import react from "@vitejs/plugin-react";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config({ path: "../../.env" });
+// Fix __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+let canisterIds = {};
+
+try {
+  const localCanisters = JSON.parse(
+    fs.readFileSync(
+      path.resolve(__dirname, "../../.dfx/local/canister_ids.json")
+    )
+  );
+  canisterIds = localCanisters;
+} catch (error) {
+  console.warn(
+    "Warning: Could not load canister IDs. Is the local replica running?",
+    error
+  );
+}
 
 export default defineConfig({
-  base: "/", // <-- ✅ Add this line here
-
-  build: {
-    emptyOutDir: true,
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: "globalThis",
-      },
+  plugins: [react()],
+  define: {
+    "process.env": {
+      VITE_BACKEND_CANISTER_ID: JSON.stringify(
+        canisterIds.icp_portfolio_backend?.local ??
+          "backend-canister-id-not-found"
+      ),
     },
   },
   server: {
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:4943",
-        changeOrigin: true,
-      },
-    },
-  },
-  plugins: [
-    react(),
-    environment("all", { prefix: "CANISTER_" }),
-    environment("all", { prefix: "DFX_" }),
-  ],
-  resolve: {
-    alias: [
-      {
-        find: "declarations",
-        replacement: fileURLToPath(new URL("../declarations", import.meta.url)),
-      },
-    ],
-    dedupe: ["@dfinity/agent"],
+    port: 3000,
   },
 });

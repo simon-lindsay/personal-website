@@ -14,5 +14,16 @@
   "type": "module",
   "workspaces": [
     "src/icp_portfolio_frontend"
-  ]
+  ],
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "esbuild": "^0.25.2",
+    "react-icons": "^5.5.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.9.6"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.87.0"
+  }
 }
